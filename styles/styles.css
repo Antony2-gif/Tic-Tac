@@ -50,3 +50,22 @@
 }
 
 /* Ahora le asignamos un color cada jugardor */
+
+.turnos-player {
+    color: aquamarine;
+}
+
+.playerother {
+    color: blueviolet;
+}
+
+#reset{
+    margin-top: 20px;
+    background-color: red;
+    color: #FFFFFF;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
