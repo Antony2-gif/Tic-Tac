@@ -1,43 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic Tac Toe</title>
     <!--Enlazamos la hoja de estilos-->
-    <link rel="stylesheet" href="styles/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <div style="overflow: hidden">
+      <svg
+        preserveAspectRatio="none"
+        viewBox="0 0 1200 120"
+        xmlns="http://www.w3.org/2000/svg"
+        style="fill: #3d6db6; width: 100%; height: 170px; position: absolute"
+      >
+        <path
+          d="M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z"
+        />
+      </svg>
+    </div>
 
     <main class="backg">
-        <section class="title">
-            <h1>Juego del Tic Tack Toe</h1>
-        </section>
-        <!--Creamos una seccion que nos mostrara el turno de cada participante-->
-        <section class="turnos">
-            Turno del Jugador <span class="turnos-player playerX">X</span> 
-        </section>
-        <!-- Cremos un Seccion para la tabla-->
-        <section class="Tic-tac">
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <div class="Celdas"></div>
-            <!--Creamos un contenedor para el winer -->
-            <div class="resultado"></div>
-            <section class="display announcer hide"></section>
-            <button id="reset">Reiniciar</button>
-        </section>
+      <section class="title">
+        <h1>Juego del Tic Tac Toe</h1>
+      </section>
+      <!--Creamos una seccion que nos mostrara el turno de cada participante-->
+      <section class="turnos" >
+        Turno del Jugador <span class="turnos-player playerX">X</span>
+      </section>
+
+      <!-- Cremos un Seccion para la tabla-->
+      <section class="Tic-tac">
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+        <div class="Celdas"></div>
+      </section>
+
+      <section class="display resultado hide" >
+      </section>
+
+      <section class="Butt">
+        <button id="reset">Reiniciar</button>
+        
+      </section>
     </main>
-
-
+    
+    <script>
+      function activarAnimacion(elemento) {
+        elemento.style.background =
+          "linear-gradient(90deg, #228be6 5%, #3bc9db 95%)"; // Color por defecto
+        elemento.setAttribute("transition-style", "in:circle:bottom-right");
+        setTimeout(() => {
+          elemento.removeAttribute("transition-style");
+          elemento.style.background = ""; // Eliminamos el color
+        }, 500); // Tiempo de Duracion     }
+    }
+      // Funcion para cambiar el colr
+      function cambiarColor(elemento) {
+        elemento.style.background =
+          "linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)"; // 
+      }
+    </script>
 
     <!--Cargamos nuestro script-->
     <script src="js/js.js"></script>
-</body>
+
+  </body>
 </html>

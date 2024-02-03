@@ -10,7 +10,11 @@ window.addEventListener('DOMContentLoaded',() => {
     //Declaramos el player
     const player = document.querySelector('.playerX');
 
-    const announcer = document.querySelector('.announcer');
+    const resultado_o = document.querySelector('.resultado');
+
+    //declaramos el main principal
+    const mainss = document.querySelector('.backg');
+
     //Declaramos un arreglo sobre las 9 celdas del tic tac
     let tablero = ['','', '', '', '', '', '','', ''];
 
@@ -73,16 +77,28 @@ window.addEventListener('DOMContentLoaded',() => {
     const Ver_Ganador = (type) => {
         switch(type){
             case PLAYERO_WON:
-                announcer.innerHTML = 'Player <span class="playerO">O</span> Won'; 
-                //announcer.innerHTML = 'Player <span class="playerO">O</span> Won';
+                resultado_o.innerHTML = 'Jugador <span class="playerO">O</span> Won'; 
+                //resultado_o.innerHTML = 'Player <span class="playerO">O</span> Won';
+                //mainss.classList.add('transition-style="in:circle:bottom-right"');
+                mainss.setAttribute('onclick', 'activarAnimacion(this)');
+                activarAnimacion(mainss);  // Llama a la función para activar la animación directamente
                 break;
             case PLAYERX_WON:
-                announcer.innerHTML = 'Player <span class="playerX">X</span> Won'; 
+                resultado_o.innerHTML = 'Jugador <span class="playerX">X</span> Won'; 
+                mainss.setAttribute('onclick', 'activarAnimacion(this); cambiarColor(this);');
                 break;
             case empate:
-                announcer.innerHTML = 'Empate'; 
+                resultado_o.innerHTML = 'Empate'; 
         }
-        announcer.classList.remove('hide');
+        resultado_o.classList.remove('hide');
+        //resultado_o.classList.add('animated', 'fadeIn'); // Puedes cambiar 'fadeIn' por el nombre de la animación que prefieras
+
+        // Elimina las clases de animación después de un tiempo
+        setTimeout(() => {
+            resultado_o.classList.remove('animated', 'fadeIn');
+        }, 1000); // Ajusta el tiempo según la duración de tu animación
+
+
     };
 
 
@@ -92,7 +108,15 @@ window.addEventListener('DOMContentLoaded',() => {
         //Validamos que la casilla este libre
         if(Validar_Celda(celda) && Juego_Activo){
             celda.innerHTML = player_Actual;
+            
             celda.classList.add(`player${player_Actual}`);
+            if(player_Actual=='X'){
+                celda.style.background = 'linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)';
+
+            }else{
+
+                celda.style.background = 'linear-gradient(90deg, #228be6 5%, #3bc9db 95%)';
+            }
             //Ahora Actualizamo el tablero un la posiscion que escoguio el jugador
             actualizar_Tablero(index);
             //Validamos el juego
@@ -110,8 +134,6 @@ window.addEventListener('DOMContentLoaded',() => {
         //Actualizamos al player Actual
         player.innerHTML = player_Actual;
         player.classList.add(`player${player_Actual}`);
-
-
     }
 
     const actualizar_Tablero = (index) => {
@@ -136,7 +158,35 @@ window.addEventListener('DOMContentLoaded',() => {
     });
 
 
+    //Metodo para reinicar el juego
+
+    const Reinicar_Partida = () => {
+        tablero = ['', '', '', '', '', '', '', '', ''];
+        Juego_Activo = true;
+
+        resultado_o.classList.add('hide');
+        
+        if (player === 'O') {
+            changePlayer();
+        }
+
+        celda.forEach(celda => {
+            celda.innerText = '';
+            celda.classList.remove('playerX');
+            celda.classList.remove('playerO');
+        });
+
+        mainss.removeAttribute('onclick');
+
+        celda.forEach( (celda, index) => {
+            //Limpiamos todos los colores de las Celadas
+            celda.style.background = '';
+        });
+    }
 
 
-    //reset.addEventListener('click',resetBotton);
+    reset.addEventListener('click',Reinicar_Partida);
+
+
+
 })
