@@ -10,6 +10,7 @@
   <body>
     <div style="overflow: hidden">
       <svg
+        alt="Decoración de fondo"
         preserveAspectRatio="none"
         viewBox="0 0 1200 120"
         xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +27,7 @@
         <h1>Juego del Tic Tac Toe</h1>
       </section>
       <!--Creamos una seccion que nos mostrara el turno de cada participante-->
-      <section class="turnos" >
+      <section class="turnos" aria-live="polite">
         Turno del Jugador <span class="turnos-player playerX">X</span>
       </section>
 
@@ -43,15 +44,13 @@
         <div class="Celdas"></div>
       </section>
 
-      <section class="display resultado hide" >
-      </section>
+      <section class="display resultado hide"></section>
 
       <section class="Butt">
-        <button id="reset">Reiniciar</button>
-        
+        <button id="reset" aria-label="Reiniciar el juego">Reiniciar</button>
       </section>
     </main>
-    
+
     <script>
       function activarAnimacion(elemento) {
         elemento.style.background =
@@ -61,16 +60,15 @@
           elemento.removeAttribute("transition-style");
           elemento.style.background = ""; // Eliminamos el color
         }, 500); // Tiempo de Duracion     }
-    }
+      }
       // Funcion para cambiar el colr
       function cambiarColor(elemento) {
         elemento.style.background =
-          "linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)"; // 
+          "linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)"; //
       }
     </script>
 
     <!--Cargamos nuestro script-->
     <script src="js/js.js"></script>
-
   </body>
 </html>
