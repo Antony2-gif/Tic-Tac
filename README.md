@@ -9,4 +9,4 @@ Este proyecto esta hecho con html, css y javascript
 
 ## Uso
 
-Cuando clone el proyecto podra ocuparlo sin ninguna dependencia solo conexion a internet
+Una vez que hayas clonado el proyecto, puedes utilizarlo sin necesidad de ninguna dependencia adicional, solo se requiere una conexión a internet para su correcto funcionamiento. ¡Disfruta del juego del Tic Tac Toe!
