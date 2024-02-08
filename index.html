@@ -6,8 +6,11 @@
     <title>Tic Tac Toe</title>
     <!--Enlazamos la hoja de estilos-->
     <link rel="stylesheet" href="styles/styles.css" />
+    <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+
   </head>
   <body>
+
     <div style="overflow: hidden">
       <svg
         alt="Decoración de fondo"
@@ -23,6 +26,7 @@
     </div>
 
     <main class="backg">
+
       <section class="title">
         <h1>Juego del Tic Tac Toe</h1>
       </section>
@@ -31,17 +35,40 @@
         Turno del Jugador <span class="turnos-player playerX">X</span>
       </section>
 
+      <section class="inicio_name">
+        <h1>Bienvendido </h1>
+        <h2>Ingresa un nombre de Usuario</h2>
+        <input id="name_user" type="text">
+        <br>
+        <button id="Buscar_jugador">Jugar</button>
+      </section>
+
+
+      <section class="playerss">
+        <section class="player_1">
+          <h1>Tu: </h1>
+          <h2>Tu eres el jugador <span></span>  </h2>
+        </section>
+
+        <section class="player_2" aria-live="polite">
+          <h1>Segundo Jugador:</h1>
+        </section>
+      </section>
+      
+
+      
+      
       <!-- Cremos un Seccion para la tabla-->
       <section class="Tic-tac">
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
-        <div class="Celdas"></div>
+        <div class="Celdas" data-index="0"></div>
+        <div class="Celdas" data-index="1"></div>
+        <div class="Celdas" data-index="2"></div>
+        <div class="Celdas" data-index="3"></div>
+        <div class="Celdas" data-index="4"></div>
+        <div class="Celdas" data-index="5"></div>
+        <div class="Celdas" data-index="6"></div>
+        <div class="Celdas" data-index="7"></div>
+        <div class="Celdas" data-index="8"></div>
       </section>
 
       <section class="display resultado hide"></section>
@@ -50,6 +77,7 @@
         <button id="reset" aria-label="Reiniciar el juego">Reiniciar</button>
       </section>
     </main>
+
 
     <script>
       function activarAnimacion(elemento) {
@@ -66,6 +94,10 @@
         elemento.style.background =
           "linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)"; //
       }
+    </script>
+
+
+      
     </script>
 
     <!--Cargamos nuestro script-->

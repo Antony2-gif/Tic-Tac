@@ -1,6 +1,6 @@
+
 window.addEventListener('DOMContentLoaded',() => {
-    
-    //Declaramos nuetras variables
+
 
     //Nuetras Celdas que lo guardam
     const celda = Array.from(document.querySelectorAll('.Celdas'));
@@ -15,11 +15,14 @@ window.addEventListener('DOMContentLoaded',() => {
     //declaramos el main principal
     const mainss = document.querySelector('.backg');
 
+    //Hacemos una instancia del io
+    const socket = io();
+    const button_start = document.querySelector('#Buscar_jugador');
     //Declaramos un arreglo sobre las 9 celdas del tic tac
     let tablero = ['','', '', '', '', '', '','', ''];
 
     //Declaramos el player X
-    let player_Actual = 'X';
+    let player_Actual ="X" ;
     let Juego_Activo = true;
 
 
@@ -40,6 +43,14 @@ window.addEventListener('DOMContentLoaded',() => {
         [0, 4, 8],
         [2, 4, 6]
     ];
+
+
+    //Ocultamos los elementos 
+    document.querySelector('.backg .Tic-tac').style.display = "none";
+    document.querySelector('.backg .turnos').style.display = "none";
+    document.querySelector('.backg .playerss ').style.display = "none";
+    document.querySelector('.backg .Butt').style.display = "none";
+
 
     function Validar_Juego(){
         let roundWon = false;
@@ -77,21 +88,18 @@ window.addEventListener('DOMContentLoaded',() => {
     const Ver_Ganador = (type) => {
         switch(type){
             case PLAYERO_WON:
-                resultado_o.innerHTML = 'Jugador <span class="playerO">O</span> Won'; 
-                //resultado_o.innerHTML = 'Player <span class="playerO">O</span> Won';
-                //mainss.classList.add('transition-style="in:circle:bottom-right"');
+                resultado_o.innerHTML = 'Jugador <span class="playerO">O</span> Gano'; 
                 mainss.setAttribute('onclick', 'activarAnimacion(this)');
                 activarAnimacion(mainss);  // Llama a la función para activar la animación directamente
                 break;
             case PLAYERX_WON:
-                resultado_o.innerHTML = 'Jugador <span class="playerX">X</span> Won'; 
+                resultado_o.innerHTML = 'Jugador <span class="playerX">X</span> Gano'; 
                 mainss.setAttribute('onclick', 'activarAnimacion(this); cambiarColor(this);');
                 break;
             case empate:
                 resultado_o.innerHTML = 'Empate'; 
         }
         resultado_o.classList.remove('hide');
-        //resultado_o.classList.add('animated', 'fadeIn'); // Puedes cambiar 'fadeIn' por el nombre de la animación que prefieras
 
         // Elimina las clases de animación después de un tiempo
         setTimeout(() => {
@@ -100,31 +108,6 @@ window.addEventListener('DOMContentLoaded',() => {
 
 
     };
-
-
-
-
-    const Empezar_Juego = (celda,index) => {
-        //Validamos que la casilla este libre
-        if(Validar_Celda(celda) && Juego_Activo){
-            celda.innerHTML = player_Actual;
-            
-            celda.classList.add(`player${player_Actual}`);
-            if(player_Actual=='X'){
-                celda.style.background = 'linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)';
-
-            }else{
-
-                celda.style.background = 'linear-gradient(90deg, #228be6 5%, #3bc9db 95%)';
-            }
-            //Ahora Actualizamo el tablero un la posiscion que escoguio el jugador
-            actualizar_Tablero(index);
-            //Validamos el juego
-            Validar_Juego();
-            //Cambiamos al siguiente jugador
-            Cambiar_Jugador();
-        }
-    }
 
     const Cambiar_Jugador = () => {
         //Removemos el player anterior
@@ -140,22 +123,28 @@ window.addEventListener('DOMContentLoaded',() => {
         tablero[index] = player_Actual;
     }
 
-    //Veremos si la celda esta ocupada
-    const Validar_Celda = (celda) => {
-        if(celda.innerHTML === 'X' || celda.innerHTML === 'O'){
-            return false;
-        }
-        return true;
-            
-    };
 
 
-    //Cremos un for para recorrer todas las celdas
-    celda.forEach( (celda, index) => {
-        celda.addEventListener('click', () => Empezar_Juego(celda, index));
-        //celda.addEventListener('click', () => console.log("ss"));
-        //console.log(index)
-    });
+    function Validar_Celda(clase, indice) {
+        // Seleccionamos el div con la clase y el atributo data-index especificados
+        const celda = document.querySelector(`.${clase}[data-index="${indice}"]`);
+        
+        // Verificamos si la celda existe
+        if (celda) {
+            if (celda.textContent === 'X' || celda.textContent === 'O') {
+                //console.log(`El texto dentro de la celda con la clase "${clase}" y el índice "${indice}" es igual a "${texto}".`);
+                console.log('Si hay')
+
+                return false;
+            }else{
+                console.log('No Hay')
+
+                return true;
+            }
+
+        } 
+    }
+
 
 
     //Metodo para reinicar el juego
@@ -188,5 +177,150 @@ window.addEventListener('DOMContentLoaded',() => {
     reset.addEventListener('click',Reinicar_Partida);
 
 
+    let name;
+    //Metodo para encontrar un jugador
+    const Encontar_player = () => {
+        //Obtenemos el nombre del usuario
+        name = document.querySelector('#name_user').value;
+
+        //Nos aseguramos que este un nombre
+        if(name ==null || name ==''){
+            alert("Ingresa tu nombre");
+        }else{
+            //Desabilitamos el button
+            button_start.disabled = true;
+            console.log('Eventado');
+            //Enviamos el evento al servidor a travez del socket
+            socket.emit("find", { name: name });
+            //console.log("Evento 'find' emitido");
+
+        }
+    }
+
+    //Funcion para el button de ecnontar jugador
+    button_start.addEventListener('click',Encontar_player);
+
+    //Escuchamos el evento enviado desde el servidor
+    socket.on("find",(e) => {
+        //Si encontro a un jugador Iniciamos el juego
+        
+        //Obtenemos el objeto enviado desde el servidor
+        let allPlayersArray = e.allPlayers
+        //Mostramos el tablero
+        document.querySelector('.backg .Tic-tac').style.display = "";
+        document.querySelector('.backg .turnos').style.display = "";
+        document.querySelector('.backg .playerss ').style.display = "";
+        document.querySelector('.backg .Butt').style.display = "";
+        //Ocultamos el input del usuario
+        document.querySelector('.backg .inicio_name').style.display = "none";
+
+
+        let oppname
+        let value
+
+        //const foundObj = allPlayersArray.find(obj=>obj.p1.p1name==`${name}` || obj.p2.p2name == `${name}`)
+        //Verificamos su turno del Usuario
+        const foundObject = allPlayersArray.find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
+        //Asignamos el nombre del oponente
+        foundObject.p1.p1name == `${name}` ? oppname = foundObject.p2.p2name : oppname = foundObject.p1.p1name
+        //Verificamos que turno le toco
+        foundObject.p1.p1name == `${name}` ? value = foundObject.p1.p1value : value = foundObject.p2.p2value
+        document.querySelector('.backg .player_2').innerHTML = "Tu oponente es " + oppname
+        document.querySelector('.backg .player_1').innerHTML = value
+        
+
+        //Ahora envios las celdas 
+        celda.forEach( (celda, index) => {
+            //celda.addEventListener('click', () => Empezar_Juego(celda, index));
+            let valor =  document.querySelector('.backg .player_1').textContent;
+            console.log(valor);
+
+
+            //celda.addEventListener('click', () => console.log("ss"));
+            celda.addEventListener('click', () => {
+                console.log(celda);
+                const indexs = celda.dataset.index;
+                // Mandamos al servidor la casilla oprimida
+                socket.emit("playing", { value: valor, id: indexs, name: name });
+
+            });
+            
+        });
+
+
+                        
+    })
+
+
+    //Recibimos lo que nos envio el servidor
+    socket.on('playing',(e) => {
+        //obtenemos los datos del jugador
+        const foundObject = (e.allPlayers).find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
+
+        p1id = foundObject.p1.p1move
+        p2id = foundObject.p2.p2move
+
+        if ((foundObject.sum) % 2 == 0) {
+            player.innerText = "O"
+        }
+        else {
+            player.innerText = "X"
+
+        }
+
+        if(p1id!=''){
+            console.log(p1id)
+            document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).textContent = "X"
+            document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).disabled
+
+        }
+
+        if(p2id!=''){
+            document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).textContent = "O"
+            document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).disabled
+
+        }
+
+        check(name, foundObject.sum)
+
+
+    })
+
+    function check(name, sum) {
+        let cells = document.querySelectorAll('.Celdas');
+    
+        let b1 = cells[0].innerText || 'a';
+        let b2 = cells[1].innerText || 'b';
+        let b3 = cells[2].innerText || 'c';
+        let b4 = cells[3].innerText || 'd';
+        let b5 = cells[4].innerText || 'e';
+        let b6 = cells[5].innerText || 'f';
+        let b7 = cells[6].innerText || 'g';
+        let b8 = cells[7].innerText || 'h';
+        let b9 = cells[8].innerText || 'i';
+    
+        if ((b1 == b2 && b2 == b3) || (b4 == b5 && b5 == b6) || (b7 == b8 && b8 == b9) || (b1 == b4 && b4 == b7) || (b2 == b5 && b5 == b8) || (b3 == b6 && b6 == b9) || (b1 == b5 && b5 == b9) || (b3 == b5 && b5 == b7)) {
+            socket.emit("gameOver", { name: name });
+    
+            setTimeout(() => {
+                sum % 2 == 0 ? alert("Jugador X Gano!!") : alert("Jugador O Gano!!");
+    
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }, 100);
+        } else if (sum == 10) {
+            socket.emit("gameOver", { name: name });
+    
+            setTimeout(() => {
+                alert("Empate!!");
+    
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }, 100);
+        }
+    }
+    
 
 })
