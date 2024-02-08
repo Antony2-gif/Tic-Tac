@@ -170,3 +170,25 @@
     margin-top: 1em;
     margin-right: 15rem;
 }
+
+#name_user{
+    margin-top: 10px;
+    width: 150px; /* Ancho del input */
+    padding: 7px; /* Espaciado interno */
+    border: 5px solid #333; /* Borde del input */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de la fuente */
+    color: #333; /* Color del texto */
+}
+
+#Buscar_jugador{
+    margin-top: 15px;
+    background-color: #4CAF50; /* Color de fondo */
+    border: none; /* Sin borde */
+    color: white; /* Color del texto */
+    padding: 10px 32px; /* Espaciado interno */
+    text-align: center; /* Alineación del texto */
+    font-size: 16px; /* Tamaño de la fuente */
+    cursor: pointer; /* Cursor al pasar */
+    border-radius: 10px; /* Bordes redondeados */
+}

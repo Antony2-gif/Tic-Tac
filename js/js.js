@@ -189,7 +189,6 @@ window.addEventListener('DOMContentLoaded',() => {
         }else{
             //Desabilitamos el button
             button_start.disabled = true;
-            console.log('Eventado');
             //Enviamos el evento al servidor a travez del socket
             socket.emit("find", { name: name });
             //console.log("Evento 'find' emitido");
@@ -272,12 +271,15 @@ window.addEventListener('DOMContentLoaded',() => {
             console.log(p1id)
             document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).textContent = "X"
             document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).disabled
+            document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).style.background = 'linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)';
+
 
         }
 
         if(p2id!=''){
             document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).textContent = "O"
             document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).disabled
+            document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).style.background = 'linear-gradient(90deg, #228be6 5%, #3bc9db 95%)';
 
         }
 
