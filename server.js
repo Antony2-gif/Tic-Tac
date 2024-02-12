@@ -13,6 +13,8 @@ const { Socket } = require('dgram');
 //Creamos un servidor http utilizado express
 const server = http.createServer(app);
 
+//Puerto
+const PORT = process.env.PORT || 80;
 //Creamos una conexion WebSocket el el mismo pueto que http
 const io = new Server(server)
 //Configuramos express para utilizar los archivos en la raiz del proyecto
@@ -107,6 +109,6 @@ app.get("/",(req,res) => {
 })
 
 //Escuchamos en el puerto 3000 las conexiones
-server.listen(3000,()=>{
-    console.log("Conectado al puerto 3000");
+server.listen(PORT,()=>{
+    console.log(`Conectado al puerto ${PORT}`);
 })
