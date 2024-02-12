@@ -1,0 +1,26 @@
+{
+  "name": "Mondasi",
+  "version": "1.0.0",
+  "description": "Juego",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Node.js",
+    "Express",
+    "Socket.io",
+    "WebSockets"
+  ],
+  "author": "Antonyy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.4",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
