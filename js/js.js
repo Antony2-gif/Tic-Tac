@@ -197,7 +197,6 @@ window.addEventListener('DOMContentLoaded',() => {
     }
 
     //Funcion para el button de ecnontar jugador
-    //Funcion para el button de encontrar jugador
     button_start.addEventListener('click', Encontar_player);
 
     // Variable para mantener el estado del juego (si es el turno del jugador X)
