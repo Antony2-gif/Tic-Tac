@@ -197,96 +197,83 @@ window.addEventListener('DOMContentLoaded',() => {
     }
 
     //Funcion para el button de ecnontar jugador
-    button_start.addEventListener('click',Encontar_player);
+    //Funcion para el button de encontrar jugador
+    button_start.addEventListener('click', Encontar_player);
 
-    //Escuchamos el evento enviado desde el servidor
-    socket.on("find",(e) => {
-        //Si encontro a un jugador Iniciamos el juego
-        
-        //Obtenemos el objeto enviado desde el servidor
-        let allPlayersArray = e.allPlayers
-        //Mostramos el tablero
+    // Variable para mantener el estado del juego (si es el turno del jugador X)
+    let isPlayerXTurn = true;
+
+    // Escuchamos el evento enviado desde el servidor
+    socket.on("find", (e) => {
+        // Si encontró a un jugador, iniciamos el juego
+        let allPlayersArray = e.allPlayers;
+
+        // Mostramos el tablero y otros elementos del juego
         document.querySelector('.backg .Tic-tac').style.display = "";
         document.querySelector('.backg .turnos').style.display = "";
         document.querySelector('.backg .playerss ').style.display = "";
         document.querySelector('.backg .Butt').style.display = "";
-        //Ocultamos el input del usuario
         document.querySelector('.backg .inicio_name').style.display = "none";
 
-
-        let oppname
-        let value
-
-        //const foundObj = allPlayersArray.find(obj=>obj.p1.p1name==`${name}` || obj.p2.p2name == `${name}`)
-        //Verificamos su turno del Usuario
+        // Obtenemos los nombres de los jugadores y sus valores
+        let oppname, value;
         const foundObject = allPlayersArray.find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
-        //Asignamos el nombre del oponente
-        foundObject.p1.p1name == `${name}` ? oppname = foundObject.p2.p2name : oppname = foundObject.p1.p1name
-        //Verificamos que turno le toco
-        foundObject.p1.p1name == `${name}` ? value = foundObject.p1.p1value : value = foundObject.p2.p2value
-        document.querySelector('.backg .player_2').innerHTML = "Tu oponente es " + oppname
-        document.querySelector('.backg .player_1').innerHTML = value
-        
+        foundObject.p1.p1name == `${name}` ? oppname = foundObject.p2.p2name : oppname = foundObject.p1.p1name;
+        foundObject.p1.p1name == `${name}` ? value = foundObject.p1.p1value : value = foundObject.p2.p2value;
+        document.querySelector('.backg .player_2').innerHTML = "Tu oponente es " + oppname;
+        document.querySelector('.backg .player_1').innerHTML = value;
 
-        //Ahora envios las celdas 
-        celda.forEach( (celda, index) => {
-            //celda.addEventListener('click', () => Empezar_Juego(celda, index));
-            let valor =  document.querySelector('.backg .player_1').textContent;
-            console.log(valor);
-
-
-            //celda.addEventListener('click', () => console.log("ss"));
+        // Iteramos sobre todas las celdas para asignarles el evento click
+        celda.forEach((celda, index) => {
             celda.addEventListener('click', () => {
-                console.log(celda);
-                const indexs = celda.dataset.index;
-                // Mandamos al servidor la casilla oprimida
-                socket.emit("playing", { value: valor, id: indexs, name: name });
-
+                if ((isPlayerXTurn && value === "X") || (!isPlayerXTurn && value === "O")) {
+                    // Solo permitimos el movimiento si es el turno correcto del jugador
+                    const indexs = celda.dataset.index;
+                    socket.emit("playing", { value: value, id: indexs, name: name });
+                }
             });
-            
         });
+    });
 
+    // Recibimos lo que nos envió el servidor
+    socket.on('playing', (e) => {
+        // Obtenemos los datos del jugador
+        const foundObject = e.allPlayers.find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
+        p1id = foundObject.p1.p1move;
+        p2id = foundObject.p2.p2move;
 
-                        
-    })
+        // Cambiamos el turno del jugador
+        isPlayerXTurn = !isPlayerXTurn;
 
-
-    //Recibimos lo que nos envio el servidor
-    socket.on('playing',(e) => {
-        //obtenemos los datos del jugador
-        const foundObject = (e.allPlayers).find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
-
-        p1id = foundObject.p1.p1move
-        p2id = foundObject.p2.p2move
-
-        if ((foundObject.sum) % 2 == 0) {
-            player.innerText = "O"
+        // Deshabilitamos las celdas según el jugador
+        if (isPlayerXTurn) {
+            // Deshabilitar toda la sección Tic-tac si es el turno del jugador X
+            document.querySelectorAll('.Celdas').forEach(celda => {
+                celda.disabled = true;
+            });
+        } else {
+            // Habilitar las celdas si es el turno del jugador O
+            document.querySelectorAll('.Celdas').forEach(celda => {
+                celda.disabled = false;
+            });
         }
-        else {
-            player.innerText = "X"
 
-        }
-
-        if(p1id!=''){
-            console.log(p1id)
-            document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).textContent = "X"
-            document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).disabled
+        // Actualizamos las celdas según los movimientos de los jugadores
+        if (p1id) {
+            document.querySelector(`.Celdas[data-index="${p1id}"]`).textContent = "X";
             document.querySelector(`.${"Celdas"}[data-index="${p1id}"]`).style.background = 'linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)';
 
-
         }
-
-        if(p2id!=''){
-            document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).textContent = "O"
-            document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).disabled
+        if (p2id) {
+            document.querySelector(`.Celdas[data-index="${p2id}"]`).textContent = "O";
             document.querySelector(`.${"Celdas"}[data-index="${p2id}"]`).style.background = 'linear-gradient(90deg, #228be6 5%, #3bc9db 95%)';
 
         }
 
-        check(name, foundObject.sum)
+        // Verificamos si hay un ganador o si hay un empate
+        check(name, foundObject.sum);
+    });
 
-
-    })
 
     function check(name, sum) {
         let cells = document.querySelectorAll('.Celdas');

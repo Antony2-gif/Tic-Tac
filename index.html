@@ -3,104 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tic Tac Toe</title>
-    <!--Enlazamos la hoja de estilos-->
+    <title>Juegos</title>
     <link rel="stylesheet" href="styles/styles.css" />
-    <script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
-
   </head>
   <body>
-
-    <div style="overflow: hidden">
-      <svg
-        alt="Decoración de fondo"
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 120"
-        xmlns="http://www.w3.org/2000/svg"
-        style="fill: #3d6db6; width: 100%; height: 170px; position: absolute"
-      >
-        <path
-          d="M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z"
-        />
-      </svg>
+    <div class="container">
+      <div class="logotipo">
+        <img src="Images/Mondasi.png" alt="Logo" />
+        <h1>Mondasi</h1>
+      </div>
+      <div class="juego-cuadro">
+        <a href="Tik-tac.html">
+          <img src="Images/tik.jpg" alt="Juego 1" />
+          <h2>Tik Tac Toe</h2>
+        </a>
+      </div>
+      <div class="juego-cuadro">
+        <a href="#">
+          <img src="juego2.png" alt="Juego 2" />
+          <h2>Juego 2</h2>
+        </a>
+      </div>
+      <div class="juego-cuadro">
+        <a href="#">
+          <img src="juego3.png" alt="Juego 3" />
+          <h2>Juego 3</h2>
+        </a>
+      </div>
+      <div class="juego-cuadro">
+        <a href="#">
+          <img src="juego4.png" alt="Juego 4" />
+          <h2>Juego 4</h2>
+        </a>
+      </div>
+      <div class="juego-cuadro">
+        <a href="#">
+          <img src="juego5.png" alt="Juego 5" />
+          <h2>Juego 5</h2>
+        </a>
+      </div>
+      <div class="juego-cuadro">
+        <a href="#">
+          <img src="juego6.png" alt="Juego 6" />
+          <h2>Juego 6</h2>
+        </a>
+      </div>
     </div>
-
-    <main class="backg">
-
-      <section class="title">
-        <h1>Juego del Tic Tac Toe</h1>
-      </section>
-      <!--Creamos una seccion que nos mostrara el turno de cada participante-->
-      <section class="turnos" aria-live="polite">
-        Turno del Jugador <span class="turnos-player playerX">X</span>
-      </section>
-
-      <section class="inicio_name">
-        <h1>Bienvendido </h1>
-        <h2>Ingresa un nombre de Usuario</h2>
-        <input id="name_user" type="text">
-        <br>
-        <button id="Buscar_jugador">Jugar</button>
-      </section>
-
-
-      <section class="playerss">
-        <section class="player_1">
-          <h1>Tu: </h1>
-          <h2>Tu eres el jugador <span></span>  </h2>
-        </section>
-
-        <section class="player_2" aria-live="polite">
-          <h1>Segundo Jugador:</h1>
-        </section>
-      </section>
-      
-
-      
-      
-      <!-- Cremos un Seccion para la tabla-->
-      <section class="Tic-tac">
-        <div class="Celdas" data-index="0"></div>
-        <div class="Celdas" data-index="1"></div>
-        <div class="Celdas" data-index="2"></div>
-        <div class="Celdas" data-index="3"></div>
-        <div class="Celdas" data-index="4"></div>
-        <div class="Celdas" data-index="5"></div>
-        <div class="Celdas" data-index="6"></div>
-        <div class="Celdas" data-index="7"></div>
-        <div class="Celdas" data-index="8"></div>
-      </section>
-
-      <section class="display resultado hide"></section>
-
-      <section class="Butt">
-        <button id="reset" aria-label="Reiniciar el juego">Reiniciar</button>
-      </section>
-    </main>
-
-
-    <script>
-      function activarAnimacion(elemento) {
-        elemento.style.background =
-          "linear-gradient(90deg, #228be6 5%, #3bc9db 95%)"; // Color por defecto
-        elemento.setAttribute("transition-style", "in:circle:bottom-right");
-        setTimeout(() => {
-          elemento.removeAttribute("transition-style");
-          elemento.style.background = ""; // Eliminamos el color
-        }, 500); // Tiempo de Duracion     }
-      }
-      // Funcion para cambiar el colr
-      function cambiarColor(elemento) {
-        elemento.style.background =
-          "linear-gradient(90deg, #fd7e14 5%, #ffd43b 95%)"; //
-      }
-    </script>
-
-
-      
-    </script>
-
-    <!--Cargamos nuestro script-->
-    <script src="js/js.js"></script>
   </body>
 </html>
